@@ -42,7 +42,10 @@ function CandyCounter() {
   const [message, setMessage] = useState("Ready for a link");
   const fileInput = useRef<HTMLInputElement>(null);
   const folderInput = useRef<HTMLInputElement>(null);
-  const selectedInk = useMemo(() => inks.find((item) => item.name === ink) ?? inks[0], [ink]);
+  const selectedInk = useMemo(
+    () => inks.find((item) => item.name === ink) ?? { name: "ink" as const, label: "Ink", hex: "#241A12", className: "bg-ink" },
+    [ink],
+  );
 
   useEffect(() => {
     if (!value) { setQrUrl(""); return; }
@@ -61,6 +64,7 @@ function CandyCounter() {
   const readSelection = (files: FileList | null, type: SourceType) => {
     if (!files?.length) return;
     const first = files[0];
+    if (!first) return;
     const names = Array.from(files).slice(0, 40).map((file) => file.webkitRelativePath || file.name);
     const payload = type === "folder"
       ? `Folder: ${first.webkitRelativePath.split("/")[0]}\nFiles:\n${names.join("\n")}`
