@@ -66,11 +66,12 @@ function CandyCounter() {
     const first = files[0];
     if (!first) return;
     const names = Array.from(files).slice(0, 40).map((file) => file.webkitRelativePath || file.name);
+    const folderName = first.webkitRelativePath.split("/")[0] || first.name;
     const payload = type === "folder"
-      ? `Folder: ${first.webkitRelativePath.split("/")[0]}\nFiles:\n${names.join("\n")}`
+      ? `Folder: ${folderName}\nFiles:\n${names.join("\n")}`
       : `File: ${first.name}\nType: ${first.type || "unknown"}\nSize: ${first.size} bytes`;
     setValue(payload);
-    setLabel(type === "folder" ? first.webkitRelativePath.split("/")[0] : first.name);
+    setLabel(type === "folder" ? folderName : first.name);
     setMessage(`${files.length} ${files.length === 1 ? "item" : "items"} loaded`);
   };
 
